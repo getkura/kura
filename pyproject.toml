@@ -1,0 +1,75 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kura-mcp"
+version = "0.1.0"
+description = "Tool intelligence for AI agents. Analyze, optimize, and harmonize MCP tool descriptions and OpenClaw skills."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "Grigory Sapunov" },
+]
+keywords = ["mcp", "ai-agents", "tool-selection", "openclaw", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "click>=8.0",
+    "rich>=13.0",
+    "pyyaml>=6.0",
+    "tiktoken>=0.5",
+]
+
+[project.optional-dependencies]
+analysis = [
+    "sentence-transformers>=2.0",
+    "numpy>=1.24",
+]
+dump = [
+    "mcp>=1.0",
+]
+suggest = [
+    "anthropic>=0.30",
+    "openai>=1.0",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4",
+]
+all = [
+    "kura-mcp[analysis,dump,suggest,dev]",
+]
+
+[project.scripts]
+kura = "kura.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/getkura/kura"
+Repository = "https://github.com/getkura/kura"
+Issues = "https://github.com/getkura/kura/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kura"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

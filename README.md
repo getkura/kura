@@ -60,6 +60,9 @@ pip install kura-mcp
 # With semantic similarity detection (pulls sentence-transformers)
 pip install kura-mcp[analysis]
 
+# With live MCP server connections + OAuth
+pip install kura-mcp[dump]
+
 # With LLM-powered rewrite suggestions
 pip install kura-mcp[suggest]
 
@@ -70,28 +73,35 @@ pip install kura-mcp[all]
 ## Usage
 
 ```bash
-# Scan an MCP config file
-kura scan mcp-config.json
+# Scan a tools JSON file
+kura scan tools.json
 
 # Scan an OpenClaw skills directory
 kura scan ~/.openclaw/skills/
 
 # JSON output for CI/CD
-kura scan mcp-config.json --format json
+kura scan tools.json --format json
 
 # Custom similarity threshold
-kura scan mcp-config.json --threshold 0.80
+kura scan tools.json --threshold 0.80
 
-# Generate rewrite suggestions via LLM
-kura scan mcp-config.json --suggest --model anthropic
+# Dump tools from running MCP servers (auto-detects Claude Desktop + Cursor)
+kura dump -o tools.json
+kura dump --list                    # show available servers
+kura dump -s github -s slack        # dump specific servers
+kura dump -i                        # ask before each server
+
+# Then scan the dump
+kura scan tools.json
 ```
 
 ## Supported formats
 
+- **Live MCP servers** via `kura dump` (stdio, HTTP, SSE — with OAuth support)
 - **Claude Desktop** config (`claude_desktop_config.json`)
+- **Cursor** config (`~/.cursor/mcp.json`)
 - **OpenClaw** skill directories (`SKILL.md` files)
 - **Generic MCP** tool list JSON (any `tools/list` output)
-- More coming soon
 
 ## Why "Kura"?
 
@@ -100,8 +110,9 @@ Kura means "curate" — because tool quality is a curation problem, not a config
 ## Roadmap
 
 - [x] CLI quality scanner
-- [ ] Semantic conflict detection across servers
-- [ ] OpenClaw skill directory scanning
+- [x] Semantic conflict detection across servers
+- [x] OpenClaw skill directory scanning
+- [x] Live MCP server dumping with OAuth
 - [ ] CI/CD integration (GitHub Action)
 - [ ] LLM-powered rewrite suggestions
 
